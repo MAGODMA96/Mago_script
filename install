@@ -4,7 +4,7 @@
 
 # ejecutador
 
-# curl -sL https://github.com/fyndecolombia/mago/archive/master.tar.gz | tar xz && source mago-master/install && mago setup && cd /var/www && curl -sL https://github.com/fyndecolombia/IngeBackend/archive/master.tar.gz | tar xz IngeBackend
+# curl -sL https://github.com/MAGODMA96/Mago_script/archive/master.tar.gz | tar xz && source mago-master/install && mago setup && cd /var/www && curl -sL https://github.com/fyndecolombia/IngeBackend/archive/master.tar.gz | tar xz IngeBackend
 
 
 
@@ -22,7 +22,7 @@
 
 
 
-#curl -sL https://github.com/fyndecolombia/mago/archive/master.tar.gz | tar xz && source mago-master/install
+#curl -sL https://github.com/MAGODMA96/Mago_script/archive/master.tar.gz | tar xz && source Mago_script-main/install
 
 #···· mago setup
 # You can make sure it’s installed by running:
@@ -41,10 +41,10 @@
 
 # mago host mywebsite.com /var/www/mywebsite
 
-# Move the files to /etc/.mago and create a root mago alias
+# Move the files to /etc/.magoand create a root mago alias
 
 
-mv mago-master/.mago /etc/.mago
+mv mago-master/.mago/etc/.mago
 
 echo "alias mago='sh /etc/.mago/mago'" >> /etc/bash.bashrc
 
