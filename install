@@ -101,7 +101,7 @@ chown mago:mago /home/mago/key/fyndecol.pub
 
 
 # Remove mago folder pulled from git repo and switch user to mago
-rm -rf Mago_script-main
+# rm -rf Mago_script-main
 su - mago
 
 
