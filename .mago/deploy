@@ -17,5 +17,13 @@
 #/
 serverRoot='/var/www/'
 echo "porfavor "
-cd serverRoot
+read -p "Domain a update: " domain
+cd $serverRoot
+if ! [ -d $domain ]; then
+    redbg "The domain $domain not exists. \n Please Try another one"
+    exit
+fi
+
+cd $domain
+
 git pull origin

@@ -23,6 +23,7 @@ ssh -T git@github.com
 
 ROUTE_URL=$1
 DOMAIN_NAME=$2
+hostdeploy=$3
 
 
 if [ "$ROUTE_URL" = "" ]; then
@@ -37,24 +38,34 @@ fi
 
 
 echo "Ruta a instalar $serverRoot"
-# mkdir $rootPath
+
 cd $serverRoot
 
 git clone $ROUTE_URL "$DOMAIN_NAME"
-cd $DOMAIN_NAME
+
 git config --global --add safe.directory /var/www/$DOMAIN_NAME
 
+cd $DOMAIN_NAME
 
 cp .env.example .env
 
-# sh /etc/.mago/mago database init
+sh /etc/.mago/mago database init
 
 composer install
 
 php artisan key:generate
 
-# php artisan migrate
+npm i
 
-# php artisan db:seed
+php artisan migrate
 
-sudo bash /etc/.mago/host "$DOMAIN_NAME" "$serverRoot$DOMAIN_NAME"
+
+hostdeploy=$3
+
+read -p "Desea instalar host yes/no: " hostdeploy
+if [ "$hostdeploy" = "yes" ]
+then
+    sudo bash /etc/.mago/host "$DOMAIN_NAME" "$serverRoot$DOMAIN_NAME"
+else
+   exit
+fi
