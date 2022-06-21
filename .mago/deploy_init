@@ -49,3 +49,4 @@ php artisan key:generate
 
 # php artisan db:seed
 
+mago host $DOMAIN_NAME $serverRoot$DOMAIN_NAME
