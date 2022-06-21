@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#/
+#--------------------------------------------------------------------------
+# Mago deploy
+#--------------------------------------------------------------------------
+#
+# This command will create a new nginx host file for a specific domain
+# pass the website domain and the folder location, here's an example:
+#
+# $ mago host mywebsite.com /var/www/mywebsite
+#
+# The above command will create a new nginx host that will listen
+# for a connection coming from mywebsite.com and map it to the
+# /var/www/mywebsite/public folder
+#   mago deploy_init
+#/
+serverRoot='/var/www/'
+echo "porfavor "
+cd serverRoot
+git pull origin

@@ -1,0 +1,22 @@
+#!/bin/bash
+
+#/
+#--------------------------------------------------------------------------
+# Mago User Password
+#--------------------------------------------------------------------------
+#
+# This file will display the Mago user password
+#
+#/
+
+. /etc/.mago/includes/colors
+. /etc/.mago/includes/format
+
+setsail
+
+PASS=$(cat /etc/.mago/tmp/pass)
+
+bar
+cyan "| Mago_script User Password:"
+cyan "| $PASS"
+bar

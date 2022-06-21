@@ -1,0 +1,32 @@
+#!/bin/bash
+
+Color_Off="\033[0m"     # Text Reset
+Yellow="\033[33m"       # Yellow
+
+echo "${Yellow}Description:${Color_Off}"
+echo "  Mago_script is a CLI for building Laravel ready servers on Digital Ocean"
+echo ""
+
+echo "${Yellow}Usage:${Color_Off}"
+echo "  mago $arguments"
+echo ""
+
+echo "${Yellow}Arguments:${Color_Off}"
+echo "  ${Yellow}enter${Color_Off}              Enter shell as mago user"
+echo "  ${Yellow}setup${Color_Off}              Setup a new server with Nginx, PHP 8.0, and MySQL 8"
+echo "  ${Yellow}setup php81${Color_Off}        Setup a new server with Nginx, PHP 8.1, and MySQL 8"
+echo "  ${Yellow}setup php74${Color_Off}        Setup a new server with Nginx, PHP 7.4, and MySQL 8"
+echo "  ${Yellow}setup php73${Color_Off}        Setup a new server with Nginx, PHP 7.3, and MySQL 5.7"
+echo "  ${Yellow}setup php72${Color_Off}        Setup a new server with Nginx, PHP 7.2, and MySQL 5.7"
+echo "  ${Yellow}setup php71${Color_Off}        Setup a new server with Nginx, PHP 7.1, and MySQL 5.7"
+echo "  ${Yellow}setup mariadb${Color_Off}      Setup a new server with Nginx, PHP 8.0, and MariaDB 10.3"
+echo "  ${Yellow}setup redis${Color_Off}        Setup a new server with Nginx, PHP 8.0, and MySQL 8 and Redis Server"
+echo "  ${Yellow}new${Color_Off}                Create a new Laravel project using Mago"
+echo "  ${Yellow}host${Color_Off}               Create a new Nginx host"
+echo "  ${Yellow}host \$1 \$2${Color_Off}         \$1=domain, \$2=folder_location (ex. mago host url.com /var/www/folder)"
+echo "  ${Yellow}pass${Color_Off}               Display the mago user password"
+echo "  ${Yellow}mysqlpass${Color_Off}.         Display the MySQL password"
+echo "  ${Yellow}database${Color_Off}           Database management"
+
+
+#. /etc/.mago/includes/colors

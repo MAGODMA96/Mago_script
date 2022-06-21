@@ -1,0 +1,101 @@
+#!/bin/bash
+
+#/
+#--------------------------------------------------------------------------
+# Mago Project Creator
+#--------------------------------------------------------------------------
+#
+# Create a new Laravel project using Mago
+#
+#/
+
+. /etc/.mago/includes/colors
+. /etc/.mago/includes/format
+
+shift
+
+if [ -z $1 ]; then
+    echo "Usage: mago new <project-name> [--jet <livewire|inertia>] [--teams] [--www-alias]"
+    echo ""
+    echo "${Cyan}Tip: you can use periods in project name to automatically create a host for it"
+    exit
+fi
+
+PROJECT_PATH="$(echo "/var/www/$1" | sed -e 's/\./_/g')"
+
+# Check if period exists in the project name
+if [ -z "${1##*.*}" ]; then
+    HOST=$1
+fi
+
+shift
+
+LARAVEL_PROJECT=true
+WAVE_PROJECT=false
+INSTALL_JET=false
+JET_WITH_TEAMS=false
+HOST_WITH_WWW_ALIAS=false
+
+while [ $# -gt 0 ]; do
+    case $1 in
+        --jet)
+            if [ $# -gt 1 ]; then
+                INSTALL_JET=true
+                if [ $2 = 'livewire' ] || [ $2 = 'inertia' ]; then
+                    JET_STACK="$2"
+                else
+                    echo "${Red}ERROR${Color_Off}: Unknown jetstream stack: $2"
+                    echo "Possible values: ${Yellow}livewire, inertia"
+                    exit 1
+                fi
+                shift
+            else
+                echo "${Red}ERROR${Color_Off}: --jet requires stack name"
+                exit 1
+            fi
+            ;;
+        --teams)
+            JET_WITH_TEAMS=true
+            ;;
+	--wave)
+            WAVE_PROJECT=true
+            LARAVEL_PROJECT=false
+            ;;
+        --www-alias)
+            HOST_WITH_WWW_ALIAS=true
+            ;;
+    esac
+    shift
+done
+
+if $WAVE_PROJECT; then
+    bash /etc/.mago/wave "$PROJECT_PATH"
+else
+    bash /etc/.mago/laravel "$PROJECT_PATH"
+fi
+
+if [ -n $HOST ]; then
+    echo "Setting up host '$HOST'..."
+
+    if $HOST_WITH_WWW_ALIAS; then
+        sudo bash /etc/.mago/host "$HOST" "$PROJECT_PATH" --www-alias
+    else
+        sudo bash /etc/.mago/host "$HOST" "$PROJECT_PATH"
+    fi
+fi
+
+if $LARAVEL_PROJECT; then
+    if $INSTALL_JET; then
+        echo "Installing Laravel Jetstream with $JET_STACK..."
+        cd $PROJECT_PATH
+        composer require laravel/jetstream
+        if $JET_WITH_TEAMS; then
+            php artisan jetstream:install $JET_STACK --teams
+        else
+            php artisan jetstream:install $JET_STACK
+        fi
+    fi
+fi
+
+cyan "Tip: Run \"cd $PROJECT_PATH\" to go into project directory."
+cyan "Tip: Run \"mago database init\" in project directory to create a database."

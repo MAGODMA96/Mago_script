@@ -1,0 +1,22 @@
+#!/bin/bash
+
+#/
+#--------------------------------------------------------------------------
+# Mago Mysql Password
+#--------------------------------------------------------------------------
+#
+# This file will display the MySQL password
+#
+#/
+
+. /etc/.mago/includes/colors
+. /etc/.mago/includes/format
+
+setsail
+
+MYSQLPASS=$(cat /home/mago/.my.cnf  | grep password | awk -F'password=' '{print $2}')
+
+bar
+cyan "| MySQL Password:"
+cyan "| $MYSQLPASS"
+bar

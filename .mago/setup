@@ -1,0 +1,201 @@
+#!/bin/bash
+
+#/
+#--------------------------------------------------------------------------
+# Mago Initial Setup
+#--------------------------------------------------------------------------
+#
+# This file will setup the server with Nginx, PHP, and Mysql.
+#
+
+
+. /etc/.mago/includes/colors
+. /etc/.mago/includes/format
+
+barNoColor
+echo "| add ssh!";
+barNoColor
+
+eval "$(ssh-agent -s)"
+ssh-add /home/mago/key/fyndecol
+ssh -T git@github.com
+
+PHP="8.1"
+MYSQL_SERVICE="MySQL"
+MYSQL_PACKAGE="mysql-server"
+INSTALL_REDIS=0
+
+if [ "$2" = "php81" ] || [ "$3" = "php81" ]; then
+   PHP="8.1"
+elif [ "$2" = "php74" ] || [ "$3" = "php74" ]; then
+   PHP="7.4"
+elif [ "$2" = "php73" ] || [ "$3" = "php73" ]; then
+   PHP="7.3"
+elif [ "$2" = "php72" ] || [ "$3" = "php72" ]; then
+   PHP="7.2"
+elif [ "$2" = "php71" ] || [ "$3" = "php71" ]; then
+   PHP="7.1"
+fi
+
+if [ "$2" = "mariadb" ] || [ "$3" = "mariadb" ]; then
+   MYSQL_SERVICE="MariaDB"
+   MYSQL_PACKAGE="mariadb-server"
+fi
+
+if [ "$2" = "redis" ] || [ "$3" = "redis" ]; then
+   INSTALL_REDIS=1
+fi
+
+setsail
+
+
+bar
+cyan "| Installing Nginx ";
+bar
+
+sudo apt-get update
+sudo apt-get -y install nginx
+sudo ufw allow 'Nginx HTTP'
+sudo ufw allow 'Nginx HTTPS'
+sudo systemctl restart nginx
+
+bar
+cyan "| Installing $MYSQL_SERVICE ";
+bar
+
+MYSQLPASS=$(openssl rand -base64 32)
+MYSQLUSER='dbadmin'
+
+sudo apt-get update
+if [ ! -d /etc/.mago/tmp ]; then
+  mkdir /etc/.mago/tmp
+fi
+
+
+echo '[client]' > /home/mago/.my.cnf
+echo "user=${MYSQLUSER}" >> /home/mago/.my.cnf
+echo "password='${MYSQLPASS}'" >> /home/mago/.my.cnf
+
+chmod 600 /home/mago/.my.cnf
+
+export DEBIAN_FRONTEND=noninteractive
+echo "mysql-server-5.7 mysql-server/root_password password $MYSQLPASS" | sudo debconf-set-selections
+echo "mysql-server-5.7 mysql-server/root_password_again password $MYSQLPASS" | sudo debconf-set-selections
+echo "mysql-server mysql-server/root-pass password ${MYSQLPASS}"|sudo debconf-set-selections
+echo "mysql-server mysql-server/re-root-pass password ${MYSQLPASS}"|sudo debconf-set-selections
+echo "mysql-server-8.0 mysql-server/root-pass password ${MYSQLPASS}"|sudo debconf-set-selections
+echo "mysql-server-8.0 mysql-server/re-root-pass password ${MYSQLPASS}"|sudo debconf-set-selections
+
+
+if [ "$2" = "mariadb" ] || [ "$3" = "mariadb" ]; then
+   echo "mariadb-server-10.3 mysql-server/root-pass password ${MYSQLPASS}"|sudo debconf-set-selections
+   echo "mariadb-server-10.3 mysql-server/re-root-pass password ${MYSQLPASS}"|sudo debconf-set-selections
+fi
+
+sudo apt-get install -y ${MYSQL_PACKAGE}
+
+sudo service mysql start
+sudo mysql -uroot -p${MYSQLPASS} -e "CREATE USER ${MYSQLUSER}@localhost IDENTIFIED BY '${MYSQLPASS}'; GRANT ALL PRIVILEGES ON *.* TO ${MYSQLUSER}@localhost WITH GRANT OPTION;"
+
+# Get current client IP address
+CLIENT_IP=$(echo $SSH_CLIENT | awk '{ print $1}')
+
+# Enable 3306 ports in order to connect to database via Sequel Pro
+sudo ufw allow from ${CLIENT_IP}/32 to any port 3306
+
+
+bar
+cyan "| Installing PHP $PHP and all necessary files";
+bar
+
+sudo apt-get update
+sudo apt-get install -y language-pack-en-base
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+sudo apt-get install -y software-properties-common
+sudo add-apt-repository -y ppa:ondrej/php
+sudo apt-get -y update
+sudo apt-get -y upgrade
+
+sudo apt-get install -y unzip
+sudo apt-get install -y php-cli
+sudo apt-get install -y php$PHP-cli php$PHP-common php$PHP-mysql php$PHP-gd php$PHP-mysql php$PHP-curl php$PHP-mbstring php$PHP-xml php$PHP-zip php$PHP-fpm curl git
+
+sudo rm /usr/bin/php
+sudo ln -s /usr/bin/php$PHP /usr/bin/php
+
+bar
+cyan "| Updating Permissions "
+bar
+
+sudo chown -R mago:mago /var/www
+
+CHECK_SWAP=$(swapon -s | wc -l)
+if [ $CHECK_SWAP -lt 1 ] ; then
+    bar
+    cyan "| Adding swap file "
+    bar
+
+    # Create a swap file
+    sudo fallocate -l 1G /swapfile
+    sudo chmod 600 /swapfile
+    sudo mkswap /swapfile
+    sudo swapon /swapfile
+
+    # Making the swap file permanent
+    sudo cp /etc/fstab /etc/fstab.bak
+    echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+fi
+
+
+bar
+cyan "| Installing Composer ";
+bar
+
+curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
+
+bar
+cyan "| Installing npm"
+bar
+
+curl -sL https://deb.nodesource.com/setup_16.x | sudo bash -
+sudo apt-get install -y nodejs
+
+bar
+cyan "| Adding the Laravel Installer "
+bar
+
+sudo chown -R $USER:$USER ~/.composer/
+composer global require "laravel/installer"
+
+bar
+cyan "| Installing certbot ";
+bar
+
+sudo apt-get install -y python3 python3-venv libaugeas0 python3-pip
+#Remove certbot in case it is already installed from the repository/ppa to avoid conflict
+sudo apt-get remove --purge certbot python3-certbot-nginx
+
+sudo python3 -m venv /opt/certbot/
+sudo /opt/certbot/bin/pip install --upgrade pip
+sudo /opt/certbot/bin/pip install certbot certbot-nginx
+sudo rm -f /usr/bin/certbot
+sudo ln -s /opt/certbot/bin/certbot /usr/bin/certbot
+
+#Set up automatic certificate renewal
+echo "0 0,12 * * * root /opt/certbot/bin/python -c 'import random; import time; time.sleep(random.random() * 3600)' && certbot renew -q" | sudo tee -a /etc/crontab > /dev/null
+
+
+if [ $INSTALL_REDIS -eq 1 ] ; then
+	bar
+	cyan "| Installing Redis"
+	bar
+
+	sudo apt -y install redis-server
+fi
+
+setsail
+. /etc/.mago/deploy_proyect
+bar
+cyan "| Happy Sailing! "
+bar

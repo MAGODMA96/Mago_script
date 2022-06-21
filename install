@@ -1,0 +1,110 @@
+#!/bin/bash
+
+# Init install your applications
+
+# ejecutador
+
+# curl -sL https://github.com/fyndecolombia/mago/archive/master.tar.gz | tar xz && source mago-master/install && mago setup && cd /var/www && curl -sL https://github.com/fyndecolombia/IngeBackend/archive/master.tar.gz | tar xz IngeBackend
+
+
+
+#/
+#--------------------------------------------------------------------------
+# Install Mago
+#--------------------------------------------------------------------------
+#
+# This part of the script will move a few files to the necessary locations,
+# add a new user 'mago', and add aliases for the CLI
+#
+#/
+# Installation
+# SSH into your server and run the following command:
+
+
+
+#curl -sL https://github.com/fyndecolombia/mago/archive/master.tar.gz | tar xz && source mago-master/install
+
+#···· mago setup
+# You can make sure it’s installed by running:
+
+# mago -h
+# Creating new Laravel project
+# In order to create a new Laravel project just run the following command:
+
+# cd /var/www && composer create-project laravel/laravel mywebsite
+# Once you have your Laravel projected installed, Mago_script lets you also automate your Nginx server block creation.
+
+# Creating new Nginx server block
+# Mago_script also allows you to automate the set up of new Nginx Server Blocks in case that you need to host multiple Laravel applications on the same Droplet.
+
+# To create a new Nginx server block run:
+
+# mago host mywebsite.com /var/www/mywebsite
+
+# Move the files to /etc/.mago and create a root mago alias
+
+
+mv mago-master/.mago /etc/.mago
+
+echo "alias mago='sh /etc/.mago/mago'" >> /etc/bash.bashrc
+
+
+# Create a new password and create our new mago user
+PASS=$(openssl rand -base64 32)
+useradd -G sudo -d /home/mago -p $PASS -m mago -s /bin/bash
+
+
+# Give the mago user ability to not always require password
+echo 'mago ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
+
+
+# Turn on SSH Passwords
+# sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+# echo -n 'AllowUsers mago' >> /etc/ssh/sshd_config
+# service ssh reload  git clone git@github.com:fyndecolombia/IngeBackend.git
+
+
+
+# Store the mago user password
+if [ ! -d /etc/.mago/tmp ]; then
+  sudo mkdir /etc/.mago/tmp
+fi
+sudo echo $PASS > /etc/.mago/tmp/pass
+
+sudo chown -R mago:mago /etc/.mago/tmp
+
+
+# Include our colors and format scripts
+. /etc/.mago/includes/colors
+. /etc/.mago/includes/format
+
+# Add mago alias to mago bashrc and the bin path dir for composer
+echo "alias mago='sh /etc/.mago/mago'" >> /home/mago/.bashrc
+echo "export PATH=~/.config/composer/vendor/bin:~/.composer/vendor/bin:\$PATH" >> /home/mago/.bashrc
+
+
+
+# Show message after successfully installing
+setsailNoColor
+barNoColor
+echo "| Prepare the Sails, we're ready for the Open Sea!";
+barNoColor
+
+barNoColor
+echo "| add ssh!";
+barNoColor
+mv mago-master/key /home/mago/
+chmod 700 /home/mago/key/fyndecol
+chown mago:mago /home/mago/key/fyndecol
+chmod 700 /home/mago/key/fyndecol.pub
+chown mago:mago /home/mago/key/fyndecol.pub
+
+
+# Remove mago folder pulled from git repo and switch user to mago
+rm -rf mago-master
+su - mago
+
+
+
+
+

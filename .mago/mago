@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#/
+#--------------------------------------------------------------------------
+# Mago Main File
+#--------------------------------------------------------------------------
+#
+# This file will pass the argument to the necessary script.
+#
+#/
+
+if [ "$1" = "-h" ] || [ -z $1 ]
+then
+    . /etc/.mago/includes/help
+elif [ "$1" = "host" ] ; then
+	sudo sh /etc/.mago/$1 $2 $3 $4
+else
+    . /etc/.mago/$1 $2 $3
+fi
