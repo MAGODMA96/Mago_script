@@ -44,7 +44,7 @@
 # Move the files to /etc/.magoand create a root mago alias
 
 
-mv Mago_script-main/.mago etc/.mago
+mv Mago_script-main/.mago /etc/.mago
 
 echo "alias mago='sh /etc/.mago/mago'" >> /etc/bash.bashrc
 
