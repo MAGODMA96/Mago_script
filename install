@@ -91,7 +91,7 @@ echo "| Prepare the Sails, we're ready for the Open Sea!";
 barNoColor
 
 barNoColor
-echo "| add ssh!";
+echo "| add key ssh!";
 barNoColor
 mv Mago_script-main/key /home/mago/
 chmod 700 /home/mago/key/fyndecol
@@ -101,7 +101,7 @@ chown mago:mago /home/mago/key/fyndecol.pub
 
 
 # Remove mago folder pulled from git repo and switch user to mago
-# rm -rf Mago_script-main
+rm -rf Mago_script-main
 su - mago
 
 

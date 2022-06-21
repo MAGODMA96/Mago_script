@@ -17,6 +17,9 @@
 #/
 serverRoot='/var/www/'
 
+eval "$(ssh-agent -s)"
+ssh-add /home/mago/key/fyndecol
+ssh -T git@github.com
 
 
 echo "Url del repositorio a clonar de laravel?"

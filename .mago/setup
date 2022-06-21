@@ -16,10 +16,6 @@ barNoColor
 echo "| add ssh!";
 barNoColor
 
-eval "$(ssh-agent -s)"
-ssh-add /home/mago/key/fyndecol
-ssh -T git@github.com
-
 PHP="8.1"
 MYSQL_SERVICE="MySQL"
 MYSQL_PACKAGE="mysql-server"
@@ -195,7 +191,6 @@ if [ $INSTALL_REDIS -eq 1 ] ; then
 fi
 
 setsail
-. /etc/.mago/deploy_proyect
 bar
 cyan "| Happy Sailing! "
 bar
