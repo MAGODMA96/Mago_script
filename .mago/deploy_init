@@ -21,8 +21,8 @@ eval "$(ssh-agent -s)"
 ssh-add /home/mago/key/fyndecol
 ssh -T git@github.com
 
-ROUTE_URL=$1
-DOMAIN_NAME=$2
+DOMAIN_NAME=$1
+ROUTE_URL=$2
 hostdeploy=$3
 
 

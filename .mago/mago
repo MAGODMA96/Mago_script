@@ -14,6 +14,8 @@ then
     . /etc/.mago/includes/help
 elif [ "$1" = "host" ] ; then
 	sudo sh /etc/.mago/$1 $2 $3 $4
+elif [ "$1" = "deploy_init" ] ; then
+    sudo sh /etc/.mago/$1 $2 $3 $4
 else
     . /etc/.mago/$1 $2 $3
 fi
