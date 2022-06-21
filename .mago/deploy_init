@@ -26,15 +26,15 @@ echo "Url del repositorio a clonar de laravel?"
 read ROUTE_URL
 
 echo "Nombre de la carpeta a nombrar el repo?"
-read NAME_FILE
+read DOMAIN_NAME
 
 echo "Ruta a instalar $serverRoot"
 # mkdir $rootPath
 cd $serverRoot
 
-git clone $ROUTE_URL "$NAME_FILE"
-cd $NAME_FILE
-git config --global --add safe.directory /var/www/fyndecol.com
+git clone $ROUTE_URL "$DOMAIN_NAME"
+cd $DOMAIN_NAME
+git config --global --add safe.directory /var/www/$DOMAIN_NAME
 
 
 cp .env.example .env
