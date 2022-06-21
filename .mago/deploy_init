@@ -13,7 +13,7 @@
 # The above command will create a new nginx host that will listen
 # for a connection coming from mywebsite.com and map it to the
 # /var/www/mywebsite/public folder
-#   mago deploy_init
+#   mago deploy_init RouterRepo Domain
 #/
 serverRoot='/var/www/'
 
@@ -21,12 +21,20 @@ eval "$(ssh-agent -s)"
 ssh-add /home/mago/key/fyndecol
 ssh -T git@github.com
 
+ROUTE_URL=$1
+DOMAIN_NAME=$2
 
+
+if [ "$ROUTE_URL" = "" ]; then
 echo "Url del repositorio a clonar de laravel?"
 read ROUTE_URL
+fi
 
+if [ "$DOMAIN_NAME" = "" ]; then
 echo "Nombre de la carpeta a nombrar el repo?"
 read DOMAIN_NAME
+fi
+
 
 echo "Ruta a instalar $serverRoot"
 # mkdir $rootPath
@@ -49,4 +57,4 @@ php artisan key:generate
 
 # php artisan db:seed
 
-mago host $DOMAIN_NAME $serverRoot$DOMAIN_NAME
+sudo bash /etc/.mago/host "$DOMAIN_NAME" "$serverRoot$DOMAIN_NAME"
