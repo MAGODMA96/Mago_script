@@ -18,7 +18,7 @@
 #
 #/
 # Installation
-# SSH into your server and run the following command:
+# SSH into your server and run the following command:  curl -sL git@github.com:fyndecolombia/IngeBackend/archive/master.tar.gz | tar xz
 
 
 
@@ -94,10 +94,16 @@ barNoColor
 echo "| add key ssh!";
 barNoColor
 mv Mago_script-main/key /home/mago/
-chmod 700 /home/mago/key/fyndecol
-chown mago:mago /home/mago/key/fyndecol
-chmod 700 /home/mago/key/fyndecol.pub
-chown mago:mago /home/mago/key/fyndecol.pub
+read -p "Ya agregaste las key a /home/mago/key  Y/n: " keyadd
+if [ "$keyadd" = "Y" ]
+then
+   chmod 700 /home/mago/key/*
+   chown mago:mago /home/mago/key/*
+else
+   exit
+fi
+
+
 
 
 # Remove mago folder pulled from git repo and switch user to mago

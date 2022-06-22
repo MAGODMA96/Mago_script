@@ -14,6 +14,7 @@
 # for a connection coming from mywebsite.com and map it to the
 # /var/www/mywebsite/public folder
 #   mago deploy_init
+#  mago deploy_init fyndecol.com git@github.com:MAGODMA96/Mago_script.git
 #/
 serverRoot='/var/www/'
 echo "porfavor "
@@ -27,3 +28,11 @@ fi
 cd $domain
 
 git pull origin
+
+composer install
+
+php artisan key:generate
+
+npm i
+
+php artisan migrate

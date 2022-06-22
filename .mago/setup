@@ -12,10 +12,6 @@
 . /etc/.mago/includes/colors
 . /etc/.mago/includes/format
 
-barNoColor
-echo "| add ssh!";
-barNoColor
-
 PHP="8.1"
 MYSQL_SERVICE="MySQL"
 MYSQL_PACKAGE="mysql-server"
