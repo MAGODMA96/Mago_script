@@ -107,18 +107,18 @@ chmod 700 /home/mago/.ssh/$keyprivate.pub && chown mago:mago /home/mago/.ssh/$ke
 
 # Remove mago folder pulled from git repo and switch user to mago
 rm -rf Mago_script-main
-# su - mago
+su - mago
 
-# read -p "Nombre de github: " github_name
-# git config --global user.name "$github_name"
-# read -p "Correo de github: " github_email
-# git config --global user.email "$github_email"
+read -p "Nombre de github: " github_name
+git config --global user.name "$github_name"
+read -p "Correo de github: " github_email
+git config --global user.email "$github_email"
 
-# eval "$(ssh-agent -s)"
+eval "$(ssh-agent -s)"
 
-# ssh-add /home/mago/.ssh/$keyprivate
+ssh-add /home/mago/.ssh/$keyprivate
 
-# ssh -T git@github.com
+ssh -T git@github.com
 
 
 
