@@ -13,7 +13,7 @@
 # The above command will create a new nginx host that will listen
 # for a connection coming from mywebsite.com and map it to the
 # /var/www/mywebsite/public folder
-#   mago deploy_init RouterRepo Domain
+#    RouterRepo Domain
 #/
 serverRoot='/var/www/'
 
@@ -29,8 +29,6 @@ hostdeploy=$3
 eval "$(ssh-agent -s)"
 read -p "Nombre de la key ssh private: " keyprivate
 ssh-add /home/mago/.ssh/$keyprivate
-
-ssh -T git@github.com
 
 
 if [ "$ROUTE_URL" = "" ]; then
@@ -50,8 +48,6 @@ cd $serverRoot
 
 git clone $ROUTE_URL "$DOMAIN_NAME"
 
-
-
 cd $DOMAIN_NAME
 
 cp .env.example .env
@@ -65,7 +61,7 @@ php artisan key:generate
 npm i
 
 php artisan migrate
-chown -R mago:www-data /var/www/$DOMAIN_NAME/*
+sudo chown -R mago:mago /var/www/$DOMAIN_NAME/.git*
 git config --global --add safe.directory /var/www/$DOMAIN_NAME
 
 hostdeploy=$3
