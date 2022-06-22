@@ -2,12 +2,6 @@
 
 # Init install your applications
 
-# ejecutador
-
-# curl -sL https://github.com/MAGODMA96/Mago_script/archive/master.tar.gz | tar xz && source mago-master/install && mago setup && cd /var/www && curl -sL https://github.com/fyndecolombia/IngeBackend/archive/master.tar.gz | tar xz IngeBackend
-
-
-
 #/
 #--------------------------------------------------------------------------
 # Install Mago
@@ -18,8 +12,7 @@
 #
 #/
 # Installation
-# SSH into your server and run the following command:  curl -sL git@github.com:fyndecolombia/IngeBackend/archive/master.tar.gz | tar xz
-
+# SSH into your server and run the following command:
 
 
 #curl -sL https://github.com/MAGODMA96/Mago_script/archive/master.tar.gz | tar xz && source Mago_script-main/install
@@ -107,14 +100,25 @@ else
     exit 1
 fi
 
-read -p "Nombre de la key publica.pub: " keypublic
-sudo cat /home/mago/.ssh/$keypublic.pub >> /home/mago/.ssh/authorized_keys
-chmod 700 /home/mago/.ssh/$keypublic && chown mago:mago /home/mago/.ssh/$keypublic
-chmod 700 /home/mago/.ssh/$keypublic.pub && chown mago:mago /home/mago/.ssh/$keypublic.pub
+read -p "Nombre de la key ssh private: " keyprivate
+sudo cat /home/mago/.ssh/$keyprivate.pub >> /home/mago/.ssh/authorized_keys
+chmod 700 /home/mago/.ssh/$keyprivate && chown mago:mago /home/mago/.ssh/$keyprivate
+chmod 700 /home/mago/.ssh/$keyprivate.pub && chown mago:mago /home/mago/.ssh/$keyprivate.pub
 
 # Remove mago folder pulled from git repo and switch user to mago
 rm -rf Mago_script-main
 # su - mago
+
+# read -p "Nombre de github: " github_name
+# git config --global user.name "$github_name"
+# read -p "Correo de github: " github_email
+# git config --global user.email "$github_email"
+
+# eval "$(ssh-agent -s)"
+
+# ssh-add /home/mago/.ssh/$keyprivate
+
+# ssh -T git@github.com
 
 
 
