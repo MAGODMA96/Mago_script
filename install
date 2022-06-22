@@ -93,13 +93,15 @@ barNoColor
 barNoColor
 echo "| add key ssh!";
 barNoColor
+
 if [ ! -d /home/mago/.ssh ]; then
    mkdir /home/mago/.ssh && chmod 700 /home/mago/.ssh
 fi
 if [ ! -d /home/mago/key ]; then
     mkdir /home/mago/key
 fi
-cp /home/mago/key/* /home/mago/.ssh/
+
+sudo cp /home/mago/key/* /home/mago/.ssh/
 
 
 
