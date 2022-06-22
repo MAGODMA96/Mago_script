@@ -109,13 +109,16 @@ read -r -p "Ya agregaste las key a /home/mago/key [y/N]" keyadd
 if [[ "$keyadd" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
     sudo cp /home/mago/key/* /home/mago/.ssh/
-    touch /home/mago/.ssh/authorized_keys && chmod 600 /home/mago/.ssh/* && chown mago:mago /home/mago/.ssh/*
+
+    touch /home/mago/.ssh/authorized_keys && chmod 600 /home/mago/.ssh/authorized_keys && chown mago:mago /home/mago/.ssh/authorized_keys
 else
     exit 1
 fi
 
 read -p "Nombre de la key publica.pub: " keypublic
 cat /home/mago/key/$keypublic >> /home/mago/.ssh/authorized_keys
+chmod 700 /home/mago/.ssh/$keypublic && chown mago:mago /home/mago/.ssh/$keypublic
+chmod 700 /home/mago/.ssh/$keypublic.pub && chown mago:mago /home/mago/.ssh/$keypublic.pub
 
 # Remove mago folder pulled from git repo and switch user to mago
 rm -rf Mago_script-main
