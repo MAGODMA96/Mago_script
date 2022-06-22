@@ -90,7 +90,7 @@ barNoColor
 
 if [ ! -d /home/mago/.ssh ]; then
    mkdir /home/mago/.ssh && chmod 700 /home/mago/.ssh
-   sudo chown mago .ssh
+
 fi
 
 read -r -p "Ya agregaste las key ssh a /home/mago/.ssh [y/N]" keyadd
