@@ -26,8 +26,8 @@ hostdeploy=$3
 # read -p "Correo de github: " github_email
 # git config --global user.email "$github_email"
 
-# eval "$(ssh-agent -s)"
 # read -p "Nombre de la key ssh private: " keyprivate
+eval "$(ssh-agent -s)"
 sudo chown mago .ssh
 ssh-add /home/mago/.ssh/id_rsa
 ssh -T git@github.com
