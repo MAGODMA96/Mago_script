@@ -21,7 +21,7 @@ eval "$(ssh-agent -s)"
 read -p "Nombre de la key privada: " keyprivate
 ssh-add /home/mago/key/$keyprivate
 read -p "Nombre de la key publica.pub: " keypublic
-cat /home/mago/key/keypublic >> ~/.ssh/authorized_keys
+cat /home/mago/key/$keypublic >> ~/.ssh/authorized_keys
 ssh -T git@github.com
 
 DOMAIN_NAME=$1

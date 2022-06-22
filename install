@@ -97,7 +97,7 @@ if [ ! -d /home/mago/.ssh ]; then
    mkdir /home/mago/.ssh && chmod 700 /home/mago/.ssh
 fi
 
-touch /home/mago/.ssh/authorized_keys && chmod 600 /home/mago/.ssh/authorized_keys
+touch /home/mago/.ssh/authorized_keys && chmod 600 /home/mago/.ssh/authorized_keys && chown mago:mago /home/mago/.ssh/authorized_keys
 
 if [ ! -d /home/mago/key ]; then
     mkdir /home/mago/key
