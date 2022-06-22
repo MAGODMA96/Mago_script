@@ -101,13 +101,14 @@ if [ ! -d /home/mago/key ]; then
     mkdir /home/mago/key
 fi
 
-sudo cp /home/mago/key/* /home/mago/.ssh/
+
 
 
 
 read -r -p "Ya agregaste las key a /home/mago/key [y/N]" keyadd
 if [[ "$keyadd" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
+    sudo cp /home/mago/key/* /home/mago/.ssh/
     touch /home/mago/.ssh/authorized_keys && chmod 600 /home/mago/.ssh/* && chown mago:mago /home/mago/.ssh/*
 else
     exit 1
