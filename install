@@ -65,7 +65,7 @@ fi
 sudo echo $PASS > /etc/.mago/tmp/pass
 
 sudo chown -R mago:mago /etc/.mago/tmp
-sudo chown mago .ssh
+
 
 
 # Include our colors and format scripts
@@ -90,6 +90,7 @@ barNoColor
 
 if [ ! -d /home/mago/.ssh ]; then
    mkdir /home/mago/.ssh && chmod 700 /home/mago/.ssh
+   sudo chown mago .ssh
 fi
 
 read -r -p "Ya agregaste las key ssh a /home/mago/.ssh [y/N]" keyadd
