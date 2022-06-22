@@ -91,19 +91,22 @@ if [ ! -d /home/mago/.ssh ]; then
    mkdir /home/mago/.ssh && chmod 700 /home/mago/.ssh
 fi
 
-
 read -r -p "Ya agregaste las key ssh a /home/mago/.ssh [y/N]" keyadd
 if [[ "$keyadd" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
     touch /home/mago/.ssh/authorized_keys && chmod 600 /home/mago/.ssh/authorized_keys && chown mago:mago /home/mago/.ssh/authorized_keys
+    sudo cat /home/mago/.ssh/id_rsa.pub >> /home/mago/.ssh/authorized_keys
+    chmod 700 /home/mago/.ssh/id_rsa && chown mago:mago /home/mago/.ssh/id_rsa
+    chmod 700 /home/mago/.ssh/id_rsa.pub && chown mago:mago /home/mago/.ssh/id_rsa.pub
 else
-    exit 1
+    read -p "Nombre de la key ssh private: " keyprivate
+    sudo cat /home/mago/.ssh/$keyprivate.pub >> /home/mago/.ssh/authorized_keys
+    chmod 700 /home/mago/.ssh/$keyprivate && chown mago:mago /home/mago/.ssh/$keyprivate
+    chmod 700 /home/mago/.ssh/$keyprivate.pub && chown mago:mago /home/mago/.ssh/$keyprivate.pub
 fi
 
-read -p "Nombre de la key ssh private: " keyprivate
-sudo cat /home/mago/.ssh/$keyprivate.pub >> /home/mago/.ssh/authorized_keys
-chmod 700 /home/mago/.ssh/$keyprivate && chown mago:mago /home/mago/.ssh/$keyprivate
-chmod 700 /home/mago/.ssh/$keyprivate.pub && chown mago:mago /home/mago/.ssh/$keyprivate.pub
+
+
 
 # Remove mago folder pulled from git repo and switch user to mago
 rm -rf Mago_script-main
