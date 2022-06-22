@@ -93,7 +93,7 @@ barNoColor
 barNoColor
 echo "| add key ssh!";
 barNoColor
-mv Mago_script-main/key /home/mago/
+sudo mkdir /home/mago/key
 read -p "Ya agregaste las key a /home/mago/key  Y/n: " keyadd
 if [ "$keyadd" = "Y" ]
 then
