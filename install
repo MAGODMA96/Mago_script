@@ -93,9 +93,16 @@ barNoColor
 barNoColor
 echo "| add key ssh!";
 barNoColor
-mkdir .ssh && chmod 700 .ssh
-touch .ssh/authorized_keys && chmod 600 .ssh/authorized_keys
-mkdir /home/mago/key
+if [ ! -d /home/mago/.ssh ]; then
+   mkdir /home/mago/.ssh && chmod 700 /home/mago/.ssh
+fi
+
+touch /home/mago/.ssh/authorized_keys && chmod 600 /home/mago/.ssh/authorized_keys
+
+if [ ! -d /home/mago/key ]; then
+    mkdir /home/mago/key
+fi
+
 read -p "Ya agregaste las key a /home/mago/key  Y/n: " keyadd
 if [ "$keyadd" = "Y" ]
 then
