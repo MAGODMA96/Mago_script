@@ -21,10 +21,10 @@ DOMAIN_NAME=$1
 ROUTE_URL=$2
 hostdeploy=$3
 
-read -p "Nombre de github: " github_name
-git config --global user.name "$github_name"
-read -p "Correo de github: " github_email
-git config --global user.email "$github_email"
+# read -p "Nombre de github: " github_name
+# git config --global user.name "$github_name"
+# read -p "Correo de github: " github_email
+# git config --global user.email "$github_email"
 
 eval "$(ssh-agent -s)"
 read -p "Nombre de la key ssh private: " keyprivate
@@ -39,7 +39,7 @@ read ROUTE_URL
 fi
 
 if [ "$DOMAIN_NAME" = "" ]; then
-echo "Nombre de la carpeta a nombrar el repo?"
+echo "Nombre del dominio a usar?"
 read DOMAIN_NAME
 fi
 
@@ -50,7 +50,7 @@ cd $serverRoot
 
 git clone $ROUTE_URL "$DOMAIN_NAME"
 
-git config --global --add safe.directory /var/www/$DOMAIN_NAME
+
 
 cd $DOMAIN_NAME
 
@@ -65,7 +65,8 @@ php artisan key:generate
 npm i
 
 php artisan migrate
-
+chown -R mago:www-data /var/www/$DOMAIN_NAME/*
+git config --global --add safe.directory /var/www/$DOMAIN_NAME
 
 hostdeploy=$3
 
