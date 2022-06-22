@@ -104,7 +104,7 @@ if [ ! -d /home/mago/key ]; then
 fi
 
 read -p "Ya agregaste las key a /home/mago/key  Y/n: " keyadd
-if [ "$keyadd" = "Y" ]
+if [ "$keyadd" = "Y" || "$keyadd" = "y" ]
 then
    chmod 700 /home/mago/key/*
    chown mago:mago /home/mago/key/*
