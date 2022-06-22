@@ -13,7 +13,7 @@
 # The above command will create a new nginx host that will listen
 # for a connection coming from mywebsite.com and map it to the
 # /var/www/mywebsite/public folder
-#   mago deply_init RouterRepo Domain
+#    RouterRepo Domain
 #/
 serverRoot='/var/www/'
 
@@ -26,9 +26,11 @@ hostdeploy=$3
 # read -p "Correo de github: " github_email
 # git config --global user.email "$github_email"
 
-eval "$(ssh-agent -s)"
-read -p "Nombre de la key ssh private: " keyprivate
-sudo ssh-add /home/mago/.ssh/$keyprivate
+# eval "$(ssh-agent -s)"
+# read -p "Nombre de la key ssh private: " keyprivate
+# ssh-add /home/mago/.ssh/$keyprivate
+
+ssh -T git@github.com
 
 
 if [ "$ROUTE_URL" = "" ]; then
