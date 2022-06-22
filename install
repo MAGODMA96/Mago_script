@@ -103,17 +103,15 @@ if [ ! -d /home/mago/key ]; then
     mkdir /home/mago/key
 fi
 
-read -p "Ya agregaste las key a /home/mago/key  Y/n: " keyadd
-if [ "$keyadd" = "Y" || "$keyadd" = "y" ]
+read -r -p "Ya agregaste las key a /home/mago/key [y/N]" keyadd
+
+if [[ "$keyadd" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
-   chmod 700 /home/mago/key/*
-   chown mago:mago /home/mago/key/*
+    chmod 700 /home/mago/key/*
+    chown mago:mago /home/mago/key/*
 else
-   exit
+    exit 1
 fi
-
-
-
 
 # Remove mago folder pulled from git repo and switch user to mago
 rm -rf Mago_script-main
