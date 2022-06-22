@@ -24,7 +24,7 @@ git config --global user.email "$github_email"
 
 eval "$(ssh-agent -s)"
 read -p "Nombre de la key privada: " keyprivate
-ssh-add /home/mago/key/$keyprivate
+ssh-add /home/mago/.ssh/$keyprivate
 
 ssh -T git@github.com
 
