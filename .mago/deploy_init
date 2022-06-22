@@ -21,6 +21,16 @@ DOMAIN_NAME=$1
 ROUTE_URL=$2
 hostdeploy=$3
 
+read -p "Nombre de github: " github_name
+git config --global user.name "$github_name"
+read -p "Correo de github: " github_email
+git config --global user.email "$github_email"
+
+eval "$(ssh-agent -s)"
+read -p "Nombre de la key ssh private: " keyprivate
+ssh-add /home/mago/.ssh/$keyprivate
+
+ssh -T git@github.com
 
 
 if [ "$ROUTE_URL" = "" ]; then

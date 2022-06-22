@@ -109,16 +109,6 @@ chmod 700 /home/mago/.ssh/$keyprivate.pub && chown mago:mago /home/mago/.ssh/$ke
 rm -rf Mago_script-main
 su - mago
 
-read -p "Nombre de github: " github_name
-git config --global user.name "$github_name"
-read -p "Correo de github: " github_email
-git config --global user.email "$github_email"
-
-eval "$(ssh-agent -s)"
-
-ssh-add /home/mago/.ssh/$keyprivate
-
-ssh -T git@github.com
 
 
 
