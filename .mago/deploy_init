@@ -13,7 +13,7 @@
 # The above command will create a new nginx host that will listen
 # for a connection coming from mywebsite.com and map it to the
 # /var/www/mywebsite/public folder
-#    RouterRepo Domain
+#   mago deply_init RouterRepo Domain
 #/
 serverRoot='/var/www/'
 
@@ -28,7 +28,7 @@ hostdeploy=$3
 
 eval "$(ssh-agent -s)"
 read -p "Nombre de la key ssh private: " keyprivate
-ssh-add /home/mago/.ssh/$keyprivate
+sudo ssh-add /home/mago/.ssh/$keyprivate
 
 
 if [ "$ROUTE_URL" = "" ]; then
