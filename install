@@ -96,22 +96,23 @@ barNoColor
 if [ ! -d /home/mago/.ssh ]; then
    mkdir /home/mago/.ssh && chmod 700 /home/mago/.ssh
 fi
-
-touch /home/mago/.ssh/authorized_keys && chmod 600 /home/mago/.ssh/authorized_keys && chown mago:mago /home/mago/.ssh/authorized_keys
-
 if [ ! -d /home/mago/key ]; then
     mkdir /home/mago/key
 fi
+cp /home/mago/key/* /home/mago/.ssh/
+
+
 
 read -r -p "Ya agregaste las key a /home/mago/key [y/N]" keyadd
-
 if [[ "$keyadd" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
-    chmod 700 /home/mago/key/*
-    chown mago:mago /home/mago/key/*
+    touch /home/mago/.ssh/authorized_keys && chmod 600 /home/mago/.ssh/* && chown mago:mago /home/mago/.ssh/*
 else
     exit 1
 fi
+
+read -p "Nombre de la key publica.pub: " keypublic
+cat /home/mago/key/$keypublic >> /home/mago/.ssh/authorized_keys
 
 # Remove mago folder pulled from git repo and switch user to mago
 rm -rf Mago_script-main
