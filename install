@@ -102,6 +102,7 @@ then
     chmod 600 /home/mago/.ssh/id_rsa.pub && chown mago:mago /home/mago/.ssh/id_rsa.pub
 else
     read -p "Nombre de la key ssh private: " keyprivate
+    sudo cat /root/.ssh/authorized_keys >> /home/mago/.ssh/authorized_keys
     sudo cat /home/mago/.ssh/$keyprivate.pub >> /home/mago/.ssh/authorized_keys
     chmod 600 /home/mago/.ssh/$keyprivate && chown mago:mago /home/mago/.ssh/$keyprivate
     chmod 600 /home/mago/.ssh/$keyprivate.pub && chown mago:mago /home/mago/.ssh/$keyprivate.pub
