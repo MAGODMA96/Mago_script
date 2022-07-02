@@ -30,11 +30,14 @@ php artisan down --render="errors::503"
 
 git pull origin
 
+rm -rf vendor/
+rm -rf node_modules/
+
 composer install --optimize-autoloader --no-dev
 
 php artisan key:generate
 
-npm i
+npm i && npm run prod
 
 php artisan migrate
 
